@@ -2,42 +2,24 @@ pipeline {
 
       agent any
 
-      stages{
+      triggers {
 
-            stage('Build'){
+         pollSCM('* * * * *')
 
-                  steps {
+     }
+      
+stages{
 
-                        sh 'mvn clean package'
+        stage('Build'){
 
-                  }
+            steps {
 
-                  post {
-
-                        success {
-
-                              echo 'Now Archiving'
-
-                              archiveArtifacts artifacts: '**/*.war'
-
-                        }
-
-                  }
-
-             stage('Deploy to staging'){
-
-                   steps {
-
-                         build job: 'Deploy-To-Staging'
-
-                   }
-
-             }
-
-                        
+                sh 'mvn clean package'
 
             }
+        }
+}
 
-      }
+}
 
 }
